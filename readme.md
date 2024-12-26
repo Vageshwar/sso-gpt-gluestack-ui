@@ -19,7 +19,7 @@ An offline-first chat application built to provide emergency assistance, while s
 ## Installation
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/emergency-gpt.git
+git clone https://github.com/Vageshwar/sso-gpt-gluestack-ui.git
 
 # Install dependencies
 cd emergency-gpt
