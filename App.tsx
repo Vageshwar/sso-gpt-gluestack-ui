@@ -9,6 +9,7 @@ import { Center } from 'components/ui/center';
 import { VStack } from 'components/ui/vstack';
 import { Button, ButtonText } from 'components/ui/button';
 import { Icon, PlayIcon } from 'components/ui/icon';
+import Splash from 'components/splash/Splash';
 
 const Stack = createNativeStackNavigator();
 
@@ -50,6 +51,11 @@ export default function App() {
             },
           }}
         >
+          <Stack.Screen
+            name="Splash"
+            component={Splash}
+            options={{headerShown: false}}
+          />
           <Stack.Screen 
             name="Home" 
             component={HomeScreen} 
@@ -58,7 +64,7 @@ export default function App() {
           <Stack.Screen 
             name="Chat" 
             component={Chat}
-            options={{ title: 'Chat' }}
+            options={{ title: 'SOS GPT' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

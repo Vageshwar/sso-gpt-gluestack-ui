@@ -1,3 +1,4 @@
+import ChatBubbleContainer from 'components/bubble/ChatBubbleContainer';
 import { Box } from 'components/ui/box';
 import { Button, ButtonText } from 'components/ui/button';
 import { HStack } from 'components/ui/hstack';
@@ -32,16 +33,16 @@ export const Chat = () => {
     <Box className='flex flex-1 w-full h-full bg-white py-4 px-4'>
       <VStack  space="md" className='flex flex-1'>
         <ScrollView >
-          {messages.map((message) => (
-            <Box
-              key={message.id}
-            >
-              <Text >{message.text}</Text>
-              <Text >
-                {message.timestamp.toLocaleTimeString()}
-              </Text>
-            </Box>
+          <Box className='flex gap-2 w-full h-full flex-col'>
+          {messages.map((message, index) => (
+            <ChatBubbleContainer
+              key={index}
+              from={index % 2 === 0 ? 'user' : 'bot'}
+              message={message.text}
+              time={message.timestamp.toLocaleTimeString()}
+            />
           ))}
+          </Box>
         </ScrollView>
         
         <HStack space="sm" className='flex w-full justify-items-center align-center'>
