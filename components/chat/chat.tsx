@@ -16,18 +16,32 @@ interface Message {
 export const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
+  const [botTyping, setBotTyping] = useState(false);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (inputText.trim()) {
       const newMessage: Message = {
         id: Date.now(),
         text: inputText,
         timestamp: new Date(),
       };
+      setBotTyping(true);
       setMessages([...messages, newMessage]);
+      await handleBotResponse(inputText)
       setInputText('');
     }
   };
+
+  const handleBotResponse = async (message: string) => {
+    // TODO: Add bot response logic here
+    const newMessage: Message = {
+      id: Date.now(),
+      text: `Bot: ${message}`,
+      timestamp: new Date(),
+    }
+    setMessages(prev => ([...prev, newMessage]));
+    setBotTyping(false);
+  }
 
   return (
     <Box className='flex flex-1 w-full h-full bg-white py-4 px-4'>
@@ -42,6 +56,11 @@ export const Chat = () => {
               time={message.timestamp.toLocaleTimeString()}
             />
           ))}
+          {
+            botTyping 
+            &&
+          <Text>Bot is typing...</Text>
+          }
           </Box>
         </ScrollView>
         
@@ -57,7 +76,7 @@ export const Chat = () => {
               onChangeText={setInputText}
             />
           </Input>
-          <Button onPress={handleSend} size="md" className='align-center h-full'>
+          <Button disabled={botTyping} onPress={handleSend} size="md" className='align-center h-full'>
             <ButtonText>Send</ButtonText>
           </Button>
         </HStack>
