@@ -5,7 +5,9 @@ import { HStack } from 'components/ui/hstack';
 import { Input, InputField } from 'components/ui/input';
 import { VStack } from 'components/ui/vstack';
 import React, { useState } from 'react';
-import { ScrollView, Text } from 'react-native';
+import { ScrollView } from 'react-native';
+import ollama from 'ollama'
+
 
 interface Message {
   id: number;
@@ -16,8 +18,9 @@ interface Message {
 export const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
+  const [botTyping, setBotTyping] = useState(false);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (inputText.trim()) {
       const newMessage: Message = {
         id: Date.now(),
@@ -26,8 +29,25 @@ export const Chat = () => {
       };
       setMessages([...messages, newMessage]);
       setInputText('');
+      setBotTyping(true);
+      await handleBotResponse(inputText);
+      setBotTyping(false);
+
     }
   };
+
+  const handleBotResponse = async (message: string) => {
+    const response = await ollama.chat({
+      model: 'llama3.1',
+      messages: [{ role: 'user', content: message}],
+    })
+    const newMessage: Message = {
+      id: Date.now(),
+      text: response.message.content,
+      timestamp: new Date(),
+    };
+    setMessages([...messages, newMessage]);
+  }
 
   return (
     <Box className='flex flex-1 w-full h-full bg-white py-4 px-4'>
